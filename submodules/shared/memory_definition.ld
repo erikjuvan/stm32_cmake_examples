@@ -1,0 +1,86 @@
+/*##########################################################################*/
+/*STM32G070 MCU internal Memory parameters*/
+/*##########################################################################*/
+_FLASH_START_ADDR = 0x08000000;
+_FLASH_SIZE       = 512k;
+
+_RAM_START_ADDR = 0x20000000;
+_RAM_SIZE       = 144k - 16k; /* 144k - 16k (SRAM parity uses 16k) */
+
+/* These to specific variable names ar needed by bootloader */
+_MEMPART_RAM_ADDR = _RAM_START_ADDR;
+_MEMPART_RAM_SIZE = _RAM_SIZE;
+
+/*##########################################################################*/
+/*FLASH */
+/*##########################################################################*/
+
+/*############*/
+/* BOOTLOADER */
+/*############*/
+_MEMPART_FLASH_BOOT_SIZE = 48k;
+_MEMPART_FLASH_BOOT_ADDR = _FLASH_START_ADDR;
+
+/*############*/
+/* SAFE FLASH */
+/*############*/
+_MEMPART_FLASH_SAFE_SIZE = 64k; /* !!! MUST !!! be multiple of 2K (FLASH page erase size) */
+_MEMPART_FLASH_SAFE_ADDR = _MEMPART_FLASH_BOOT_ADDR + _MEMPART_FLASH_BOOT_SIZE;
+
+/* SIZE */
+_MEMPART_FLASH_SAFE_FNC_TABLE_SIZE = 1k;
+_MEMPART_FLASH_SAFE_APP_SIZE = _MEMPART_FLASH_SAFE_SIZE - _MEMPART_FLASH_SAFE_FNC_TABLE_SIZE;
+
+/* ADDR */
+_MEMPART_FLASH_SAFE_APP_ADDR = _MEMPART_FLASH_SAFE_ADDR;
+_MEMPART_FLASH_SAFE_FNC_TABLE_ADDR = _MEMPART_FLASH_SAFE_APP_ADDR + _MEMPART_FLASH_SAFE_APP_SIZE;
+
+/*############*/
+/* USER FLASH */
+/*############*/
+_MEMPART_FLASH_USER_SIZE = _FLASH_SIZE - _MEMPART_FLASH_BOOT_SIZE - _MEMPART_FLASH_SAFE_SIZE;
+_MEMPART_FLASH_USER_ADDR = _MEMPART_FLASH_SAFE_ADDR + _MEMPART_FLASH_SAFE_SIZE;
+
+/* SIZE */
+_MEMPART_FLASH_USER_FNC_TABLE_SIZE       = 1k;
+_MEMPART_FLASH_USER_BOOT_APP_CRC_SIZE    = 256;
+_MEMPART_FLASH_USER_VIRT_EEPROM_SIZE     = 12k;
+_MEMPART_FLASH_USER_PRODUCTION_INFO_SIZE = 2k;
+_MEMPART_FLASH_USER_APP_SIZE             = _MEMPART_FLASH_USER_SIZE - _MEMPART_FLASH_USER_FNC_TABLE_SIZE - _MEMPART_FLASH_USER_BOOT_APP_CRC_SIZE - _MEMPART_FLASH_USER_VIRT_EEPROM_SIZE - _MEMPART_FLASH_USER_PRODUCTION_INFO_SIZE;
+
+/* ADDR */
+/* function table */
+_MEMPART_FLASH_USER_FNC_TABLE_ADDR        = _MEMPART_FLASH_USER_ADDR;
+/* user application code */
+_MEMPART_FLASH_USER_APP_ADDR              = _MEMPART_FLASH_USER_FNC_TABLE_ADDR + _MEMPART_FLASH_USER_FNC_TABLE_SIZE;
+/* entire application (user (minus virtual eeprom and prod info) + safe) crc holder used by bootloader */
+_MEMPART_FLASH_USER_BOOT_APP_CRC_ADDR     = _MEMPART_FLASH_USER_APP_ADDR + _MEMPART_FLASH_USER_APP_SIZE;
+/* user virtual eeprom (must not be included in crc calculation by bootloader since it can change)*/
+_MEMPART_FLASH_USER_VIRT_EEPROM_ADDR      = _MEMPART_FLASH_USER_BOOT_APP_CRC_ADDR + _MEMPART_FLASH_USER_BOOT_APP_CRC_SIZE;
+/* Production data used in industrial programming and testing */
+_MEMPART_FLASH_USER_PRODUCTION_INFO_ADDR  = _MEMPART_FLASH_USER_VIRT_EEPROM_ADDR + _MEMPART_FLASH_USER_VIRT_EEPROM_SIZE;
+
+
+/*##########################################################################*/
+/* RAM */
+/*##########################################################################*/
+
+/* APPLICATION (USER + SAFE) */
+_MEMPART_RAM_SAFE_SIZE = 32k;
+_MEMPART_RAM_SAFE_ADDR = _RAM_START_ADDR;
+
+_MEMPART_RAM_USER_SIZE = 64k;
+_MEMPART_RAM_USER_ADDR = _MEMPART_RAM_SAFE_ADDR + _MEMPART_RAM_SAFE_SIZE;
+
+_MEMPART_RAM_BOOT_APP_COMMON_SIZE = 1K;
+_MEMPART_RAM_BOOT_APP_COMMON_ADDR =  _MEMPART_RAM_USER_ADDR + _MEMPART_RAM_USER_SIZE;
+
+_MEMPART_RAM_NMI_TEST_SIZE = 1K;
+_MEMPART_RAM_NMI_TEST_ADDR =  _MEMPART_RAM_BOOT_APP_COMMON_ADDR + _MEMPART_RAM_BOOT_APP_COMMON_SIZE;
+
+_MEMPART_RAM_FREE_SIZE = _RAM_SIZE - _MEMPART_RAM_SAFE_SIZE - _MEMPART_RAM_USER_SIZE - _MEMPART_RAM_BOOT_APP_COMMON_SIZE - _MEMPART_RAM_NMI_TEST_SIZE;
+_MEMPART_RAM_FREE_ADDR = _MEMPART_RAM_NMI_TEST_ADDR + _MEMPART_RAM_NMI_TEST_SIZE;
+
+/* BOOTLOADER */
+_MEMPART_RAM_BOOT_SIZE = _MEMPART_RAM_SAFE_SIZE + _MEMPART_RAM_USER_SIZE;
+_MEMPART_RAM_BOOT_ADDR = _RAM_START_ADDR;

@@ -1,0 +1,70 @@
+/**
+ * @file     valve.c
+ * @brief    Valve module
+ * @author   Erik Juvan
+ * @date     14.07.2022
+ * @version  V1.0.0
+ */
+
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * @addtogroup VALVE
+ * @{ <!-- BEGIN GROUP -->
+ */
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+// Includes
+////////////////////////////////////////////////////////////////////////////////
+#include "valve.h"
+#include "func_table.h"
+#include "trace.h"
+#include "project_conf.h"
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Constants
+////////////////////////////////////////////////////////////////////////////////
+#if (CONF_VALVE_LOG == 1)
+#define VALVE_LOG /**< Debug macro for TRACE */
+#endif
+
+#define VALVE_VERSION         "1.0.0"         /**< Module version. */
+#define VALVE_NAME            "Safe - Valve"  /**< Module name. */
+#define VALVE_NAME_SHORT      "SVL"           /**< SAFE Module short name. */
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Public functions
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * Get state of valves.
+ *
+ * @return     eVALVE_ON if one or more valves are on.
+ */
+valve_state_t valve_get_state(void)
+{
+    valve_state_t state = eVALVE_OFF;
+
+    if (pg_user_func_table->fp_valve_any_is_on() == true)
+    {
+        state = eVALVE_ON;
+    }
+
+#ifdef VALVE_LOG
+    static valve_state_t prev_state = eVALVE_OFF;
+    if (prev_state != state)
+    {
+        TRACE_DEB("%s ::: Valves turned %s", VALVE_NAME_SHORT, state == eVALVE_ON ? "ON" : "OFF");
+        prev_state = state;
+    }
+#endif
+
+    return state;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * @} <!-- END GROUP -->
+ */
+////////////////////////////////////////////////////////////////////////////////
