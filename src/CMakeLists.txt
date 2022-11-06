@@ -142,7 +142,7 @@ add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
     COMMAND ${CMAKE_SIZE} $<TARGET_FILE:${EXECUTABLE}>)
 
 add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
-    COMMAND arm-none-eabi-objdump -h -S  pu_safe.elf  > "pu_safe.list"
+    COMMAND ${CMAKE_OBJDUMP} -h -S  pu_safe.elf  > "pu_safe.list"
     COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:${EXECUTABLE}> ${EXECUTABLE}.hex
     COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${EXECUTABLE}> ${EXECUTABLE}.bin
     COMMAND python ../../scripts/calc_crc.py ${EXECUTABLE}.bin
