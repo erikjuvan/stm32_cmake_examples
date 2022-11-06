@@ -8,10 +8,9 @@ all: build
 ${BUILD_DIR}/Makefile:
 	cmake \
 		-B${BUILD_DIR} \
-		-DCMAKE_TOOLCHAIN_FILE=../gcc-arm-none-eabi.cmake \
+		-DCMAKE_TOOLCHAIN_FILE=gcc-arm-none-eabi.cmake \
 		-DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-		-G "Unix Makefiles" \
-        src
+		-G "Unix Makefiles"
 
 cmake: ${BUILD_DIR}/Makefile
 
