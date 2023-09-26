@@ -105,7 +105,10 @@ set(CPU_PARAMETERS
     -mfloat-abi=soft)
 
 # Embedded macros(defines)
-target_compile_definitions(${EXECUTABLE} PRIVATE ${MCU_MODEL} USE_HAL_DRIVER BLACKCH_DEVICE_MASTER LOG_VIA_UART)
+target_compile_definitions(${EXECUTABLE} PRIVATE ${MCU_MODEL} USE_HAL_DRIVER BLACKCH_DEVICE_MASTER LOG_VIA_UART
+	$<IF:$<CONFIG:Debug>, DEBUG, NDEBUG> # NDEBUG will be used if CMAKE_BUILD_TYPE is not set. This way "Release" is default.
+	$<$<CONFIG:AnotherBuildConfig>:SOME_MACRO>
+	)
 
 # Compiler and linker options
 target_compile_options(${EXECUTABLE} PRIVATE
@@ -118,7 +121,7 @@ target_compile_options(${EXECUTABLE} PRIVATE
     -Wextra
     -Wpedantic
     -Wno-unused-parameter
-    -O2
+    $<IF:$<CONFIG:Debug>,-Og -ggdb,-O2> # -O2 will be used if CMAKE_BUILD_TYPE is not set. You can think of it as "Release" being the default.
 )
 
 target_link_options(${EXECUTABLE} PRIVATE
