@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.23)
-project(pu_safe)
-
-set(PROJECT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/PROJECT)
+project(pu_safe VERSION 1.0)
 
 set(MCU_LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/src/linker/PU_SAFE_STM32G0B1RETX_FLASH.ld)
 
