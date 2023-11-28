@@ -103,10 +103,11 @@ set(CPU_PARAMETERS
     -mfloat-abi=soft)
 
 # Embedded macros(defines)
-target_compile_definitions(${EXECUTABLE} PRIVATE ${MCU_MODEL} USE_HAL_DRIVER BLACKCH_DEVICE_MASTER LOG_VIA_UART
-	$<IF:$<CONFIG:Debug>, DEBUG, NDEBUG> # NDEBUG will be used if CMAKE_BUILD_TYPE is not set. This way "Release" is default.
-	$<$<CONFIG:AnotherBuildConfig>:SOME_MACRO>
-	)
+target_compile_definitions(${EXECUTABLE} PRIVATE
+    ${MCU_MODEL} USE_HAL_DRIVER BLACKCH_DEVICE_MASTER LOG_VIA_UART
+    $<IF:$<CONFIG:Debug>, DEBUG, NDEBUG> # NDEBUG will be used if CMAKE_BUILD_TYPE is not set. This way "Release" is default.
+    $<$<CONFIG:AnotherBuildConfig>:SOME_MACRO>
+)
 
 # Compiler and linker options
 target_compile_options(${EXECUTABLE} PRIVATE
@@ -139,11 +140,13 @@ target_link_libraries(${EXECUTABLE} PRIVATE
     -Wl,--end-group   # It is for resolving circular dependences between several libraries
 )
 
-add_custom_command(TARGET ${EXECUTABLE} PRE_BUILD
-    # PRE_BUILD does not work, or only works for visual studio 7+ (from the documentation)
-    # Instead look into custom target, then ADD_DEPENDENCIES to make custom target build before build
-    COMMAND printf 'PRE BUILD!!!'
+add_custom_target(prebuild
+    COMMAND sh ${CMAKE_CURRENT_SOURCE_DIR}/scripts/pre_build.sh 
+    COMMENT "Pre build step"
+    VERBATIM
 )
+
+add_dependencies(${EXECUTABLE} prebuild)
 
 add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
     COMMAND ${CMAKE_SIZE} $<TARGET_FILE:${EXECUTABLE}>
