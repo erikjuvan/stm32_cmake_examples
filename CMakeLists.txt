@@ -139,11 +139,15 @@ target_link_libraries(${EXECUTABLE} PRIVATE
     -Wl,--end-group   # It is for resolving circular dependences between several libraries
 )
 
-add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
-    COMMAND ${CMAKE_SIZE} $<TARGET_FILE:${EXECUTABLE}>)
+add_custom_command(TARGET ${EXECUTABLE} PRE_BUILD
+    # PRE_BUILD does not work, or only works for visual studio 7+ (from the documentation)
+    # Instead look into custom target, then ADD_DEPENDENCIES to make custom target build before build
+    COMMAND printf 'PRE BUILD!!!'
+)
 
 add_custom_command(TARGET ${EXECUTABLE} POST_BUILD
-    COMMAND ${CMAKE_OBJDUMP} -h -S  pu_safe.elf  > "pu_safe.list"
+    COMMAND ${CMAKE_SIZE} $<TARGET_FILE:${EXECUTABLE}>
+    COMMAND ${CMAKE_OBJDUMP} -h -S $<TARGET_FILE:${EXECUTABLE}> > ${EXECUTABLE}.list
     COMMAND ${CMAKE_OBJCOPY} -O ihex $<TARGET_FILE:${EXECUTABLE}> ${EXECUTABLE}.hex
     COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:${EXECUTABLE}> ${EXECUTABLE}.bin
     COMMAND python ../../scripts/calc_crc.py ${EXECUTABLE}.bin
