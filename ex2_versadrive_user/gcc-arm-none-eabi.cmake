@@ -1,7 +1,7 @@
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
-# make and arm-none-eabi compiler must be available in path
+# make/ninja and arm-none-eabi compiler must be available in path
 
 set(TOOLCHAIN_PREFIX arm-none-eabi-)
 
