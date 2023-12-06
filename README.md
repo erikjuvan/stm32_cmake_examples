@@ -1,3 +1,3 @@
-# STM32 CMake example project
+# STM32 CMake examples
 
-A bit larger (based on a project) and more cleaned up and working well example of using cmake to build STM32 project.
+Collection of cmake examples for STM32 platform.
