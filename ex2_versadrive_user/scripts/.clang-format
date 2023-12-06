@@ -1,0 +1,63 @@
+# An easy way to get a valid .clang-format file containing all configuration
+# options of a certain predefined style is:
+# clang-format --style=WebKit --dump-config > webkit-clang-format.txt
+# to see the list of all the options of this style type:
+# clang-format --style=file --dump-config > my-clang-format.txt
+AlignAfterOpenBracket: BlockIndent
+AlignArrayOfStructures: Left
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
+  AlignCompound: true
+  PadOperators: true
+AlignConsecutiveBitFields:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+AlignConsecutiveDeclarations:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: false
+AlignConsecutiveMacros:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+AlignEscapedNewlines: Left
+AlignTrailingComments: Always
+AllowShortBlocksOnASingleLine: Empty
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: false
+#BasedOnStyle: WebKit
+BinPackArguments: true
+BinPackParameters: true
+BreakBeforeBinaryOperators: None
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: true
+  AfterStruct: true
+  AfterUnion: true
+  AfterEnum: true
+  BeforeWhile: false
+  AfterExternBlock: false
+  AfterCaseLabel: true          # false - for 
+  AfterControlStatement: Always # Never - if {
+  BeforeElse: true              # false - }
+ColumnLimit: 100
+ContinuationIndentWidth: 4
+IndentCaseLabels: false
+IndentWidth: 4
+InsertNewlineAtEOF: true
+KeepEmptyLinesAtTheStartOfBlocks: false
+Language: Cpp
+LineEnding: LF
+MaxEmptyLinesToKeep: 1
+PointerAlignment: Right
+ReflowComments: true
+SeparateDefinitionBlocks: Always
+SpacesInLineCommentPrefix:
+  Minimum: 1
+  Maximum: 1
+TabWidth: 4
+UseTab: Never
